@@ -1,0 +1,22 @@
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /:id                      --> github.com/theamrendrasingh/boolipi/api.Getting (3 handlers)
+[GIN-debug] POST   /                         --> github.com/theamrendrasingh/boolipi/api.Posting (3 handlers)
+[GIN-debug] PATCH  /:id                      --> github.com/theamrendrasingh/boolipi/api.Patching (3 handlers)
+[GIN-debug] DELETE /:id                      --> github.com/theamrendrasingh/boolipi/api.Deleting (3 handlers)
+[GIN-debug] Environment variable PORT is undefined. Using port :8080 by default
+[GIN-debug] Listening and serving HTTP on :8080
+[GIN] 2020/09/20 - 12:35:23 | 200 |    3.196685ms |             ::1 | POST     "/"
+[GIN] 2020/09/20 - 12:35:33 | 200 |    2.126283ms |             ::1 | POST     "/"
+[GIN] 2020/09/20 - 12:35:39 | 200 |    2.115722ms |             ::1 | POST     "/"
+[GIN] 2020/09/20 - 12:36:43 | 404 |         708ns |             ::1 | GET      "/?id=cf4121e1-dd0a-4886-bb03-208257ed3c8b"
+[GIN] 2020/09/20 - 12:36:55 | 404 |         528ns |             ::1 | GET      "/?=cf4121e1-dd0a-4886-bb03-208257ed3c8b"
+[GIN] 2020/09/20 - 12:39:00 | 200 |     787.907µs |             ::1 | GET      "/cf4121e1-dd0a-4886-bb03-208257ed3c8b"
+[GIN] 2020/09/20 - 12:39:36 | 404 |         662ns |             ::1 | GET      "/?cf4121e1-dd0a-4886-bb03-208257ed3c8b"
+[GIN] 2020/09/20 - 12:40:00 | 200 |      590.36µs |             ::1 | GET      "/cf4121e1-dd0a-4886-bb03-208257ed3c8b"
+[GIN] 2020/09/20 - 12:40:42 | 200 |    2.532604ms |             ::1 | PATCH    "/cf4121e1-dd0a-4886-bb03-208257ed3c8b"
+[GIN] 2020/09/20 - 12:41:17 | 204 |    1.665899ms |             ::1 | DELETE   "/595b987d-1a0e-4b86-bb45-383957ec5be1"
