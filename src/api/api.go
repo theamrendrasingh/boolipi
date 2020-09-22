@@ -7,11 +7,13 @@ import (
 	"github.com/theamrendrasingh/boolipi/db"
 )
 
+// Request struct to denote the request JSON
 type Request struct {
 	Value bool
 	Key   string `json:"key" binding:"required"`
 }
 
+// Posting to handle POST requests for creating a new boolean
 func Posting(c *gin.Context) {
 
 	var request Request
@@ -36,6 +38,7 @@ func Posting(c *gin.Context) {
 	return
 }
 
+// Getting : To handle GET requests for retieving
 func Getting(c *gin.Context) {
 	id := c.Param("id")
 	e, err := db.Fetch(id)
@@ -52,6 +55,7 @@ func Getting(c *gin.Context) {
 	})
 }
 
+// Patching function to handle patch request, to modify an existing booelan identified by id
 func Patching(c *gin.Context) {
 
 	var request Request
@@ -76,6 +80,7 @@ func Patching(c *gin.Context) {
 	return
 }
 
+// Deleting function to delete an entry
 func Deleting(c *gin.Context) {
 	id := c.Param("id")
 	err := db.Delete(id)

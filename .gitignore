@@ -19,3 +19,6 @@ vendor/
 **/build/
 
 **.obj
+
+# environemnt files for docker
+*.env
