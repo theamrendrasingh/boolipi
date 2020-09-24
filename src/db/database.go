@@ -109,7 +109,7 @@ func Patch(id string, newval bool, newkey string) (Entry, error) {
 	fmt.Println(newval)
 	fmt.Println(newkey)
 
-	// This update statement does not work properly. It cannot update a value to false as it is '0' (empty) and gorm does not update empty values
+	// This update statement does not work properly. It cannot update a value to false as it is '0' (empty), and gorm does not update empty values
 	// result := database.Model(&Entry{}).Where("uuid = ?", id).Updates(Entry{Uuid: id, Value: newval, Key: newkey})
 
 	// Hence we need to update it after creating a string map
