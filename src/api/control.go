@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	uuid "github.com/satori/go.uuid"
 	"github.com/theamrendrasingh/boolipi/db"
 )
 
@@ -21,9 +22,13 @@ func Posting(c *gin.Context) {
 
 	if err != nil {
 		fmt.Println(err)
+		c.Writer.WriteHeader(400)
+		return
 	}
 
-	e, err := db.AddValue(request.Value, request.Key)
+	u2 := uuid.NewV4().String()
+
+	e, err := db.GetRepo().Create(u2, request.Value, request.Key)
 
 	if err != nil {
 		c.Writer.WriteHeader(500)
@@ -40,8 +45,14 @@ func Posting(c *gin.Context) {
 
 // Getting : To handle GET requests for retieving
 func Getting(c *gin.Context) {
+
 	id := c.Param("id")
-	e, err := db.Fetch(id)
+	e, err := db.GetRepo().Fetch(id)
+
+	if err != nil && err.Error() == "record not found" {
+		c.Writer.WriteHeader(404)
+		return
+	}
 
 	if err != nil {
 		c.Writer.WriteHeader(500)
@@ -55,7 +66,7 @@ func Getting(c *gin.Context) {
 	})
 }
 
-// Patching function to handle patch request, to modify an existing booelan identified by id
+// Patching : function to handle patch request, to modify an existing booelan identified by id
 func Patching(c *gin.Context) {
 
 	var request Request
@@ -63,9 +74,16 @@ func Patching(c *gin.Context) {
 
 	if err != nil {
 		fmt.Println(err)
+		c.Writer.WriteHeader(400)
+		return
 	}
 
-	e, err := db.Patch(c.Param("id"), request.Value, request.Key)
+	e, err := db.GetRepo().Patch(c.Param("id"), request.Value, request.Key)
+
+	if err != nil && err.Error() == "record not found" {
+		c.Writer.WriteHeader(404)
+		return
+	}
 
 	if err != nil {
 		c.Writer.WriteHeader(500)
@@ -75,15 +93,20 @@ func Patching(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"id":    e.Uuid,
 		"value": e.Value,
-		"name":  e.Key,
+		"key":   e.Key,
 	})
 	return
 }
 
-// Deleting function to delete an entry
+// Deleting : function to handle delete requests
 func Deleting(c *gin.Context) {
 	id := c.Param("id")
-	err := db.Delete(id)
+	err := db.GetRepo().Delete(id)
+
+	if err != nil && err.Error() == "record not found" {
+		c.Writer.WriteHeader(404)
+		return
+	}
 
 	if err != nil {
 		c.Writer.WriteHeader(500)
@@ -91,4 +114,9 @@ func Deleting(c *gin.Context) {
 	}
 	c.Writer.WriteHeader(204)
 	return
+}
+
+//NoRoute : Handle requests which do not match any defined route
+func NoRoute(c *gin.Context) {
+	c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
 }

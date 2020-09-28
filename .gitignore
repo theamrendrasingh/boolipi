@@ -22,3 +22,4 @@ vendor/
 
 # environemnt files for docker
 *.env
+
