@@ -1,6 +1,8 @@
 # Boolipi - A Go API for booleans for CRUD operations
 
-## Representation and Actions
+A Go API for booleans, supporting CRUD operations for booleans with JWT authorization
+
+## API
 
 An entry consists of an `id` (uuid), a boolean `value` (boolean not string) and a `key` (string)
 
@@ -23,7 +25,18 @@ response:
 } 
 ```
 
+Usage :
+* Without Authorization : 
+  ```console
+  curl -X POST http://localhost:8080 --header "Content-Type: application/json" --data '{"value": true, "label": "Hello world!"}'
+  ```
+* With Authorization :
+  ```console
+  curl -X POST http://localhost:8080 --header "Content-Type: application/json" --data '{"value": true, "label": "Hello world!"}' --header "Authorization: Token [token]
+  ```
+
 ### Retrieve a new Boolean
+
 ```
 GET /:id
 response:
@@ -34,6 +47,15 @@ response:
   "key": "name"
 }
 ```
+
+* Without Authorization : 
+  ```console
+  curl -X GET http://localhost:8080/[id]
+  ```
+* With Authorization :
+  ```console
+  curl -X GET http://localhost:8080/[id] --header "Authorization: Token [token]
+  ```
 
 ### Update a new Boolean
 ```
@@ -54,6 +76,16 @@ response:
 }
 ```
 
+Usage :
+* Without Authorization : 
+  ```console
+  curl -X PATCH http://localhost:8080/[id] --header "Content-Type: application/json" --data '{"value": true, "label": "Hello world!"}'
+  ```
+* With Authorization :
+  ```console
+  curl -X PATCH http://localhost:8080/[id] --header "Content-Type: application/json" --data '{"value": true, "label": "Hello world!"}' --header "Authorization: Token [token]
+  ```
+
 ### Delete and existing Boolean
 ```
 DELETE /:id
@@ -61,16 +93,29 @@ response:
 HTTP 204 No Content
 ```
 
+* Without Authorization : 
+  ```console
+  curl -X DELETE http://localhost:8080/[id]
+  ```
+* With Authorization :
+  ```console
+  curl -X DELETE http://localhost:8080/[id] --header "Authorization: Token [token]
+  ```
+
+## HTTP Status codes returned
+
+| HTTP Status Codes   | Explanation  | 
+| :------------- | :---------- | 
+| 200 | GET, POST, PATCH Request successfully executed | 
+| 204  | DELETE request succesfully executed | 
+| 400  | Request format is not correct | 
+| 401  | Authorization credentials not correct |
+| 404  | Requested resource does not exist |
+| 500  | Internal server error occured |  
+
 ## How to Run
 
-You will need a running MySQL server instance to run the container. 
-
-### Using dockerhub image
-
-``` console
-% docker run -i -d -t -p 8080:8080 -e DB_USER='user' -e DB_PASS='pass' -e DB_NAME='boolipi' -e DOCKER_MODE=true -e DB_PORT='3306' -e DB_HOST='host.docker.internal'  theamrendrasingh/boolipi
-``` 
-
+You will need a running MySQL server instance to run the API service. 
 ### Build from source
 
 1. Clone this repository : 
@@ -83,9 +128,22 @@ You will need a running MySQL server instance to run the container.
 3. Build the docker image from the Dockerfile
 
     ``` docker build -t theamrendrasingh/boolipi```
-4. Run the docker container
+
+### Using dockerhub image
+
+Pull the docker image
+
+`docker pull theamrendrasingh/boolipi
+
+### Running the docker container
+After building or pulling the dcoker image from dockerhub, use the following command to run it :
+
     ```console
-    % docker run -i -d -t -p 8080:8080 -e DB_USER='user' -e DB_PASS='pass' -e DB_NAME='boolipi' -e DOCKER_MODE=true -e DB_PORT='3306' -e DB_HOST='host.docker.internal'  theamrendrasingh/boolipi 
+    % docker run -i -d -t -p 8080:8080 -e DB_USER='user' -e DB_PASS='pass' -e DB_NAME='boolipi' -e DOCKER_MODE=true -e DB_PORT='3306' -e DB_HOST='host.docker.internal' -e USE_AUTH=true theamrendrasingh/boolipi 
     ``` 
+  * Pass the required DB_USER (MySQL username), DB_PASS, DB_NAME (the name of database that the API will create/use), DB_PORT
+  * If you are using the host's MySQL server or anyother thing which is mapped to hosts localhost, set DB_HOST='host.dcoker.internal' 
+  * If you wish to use JWT token authorization, set USE_AUTH=true
+
 ## Reference 
 https://booleans.io/

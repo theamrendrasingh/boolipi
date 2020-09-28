@@ -39,7 +39,7 @@ type (
 )
 
 func createDBDsn() string {
-	if _, f := os.LookupEnv("DOCKER_MODE"); f {
+	if v, f := os.LookupEnv("DOCKER_MODE"); f && v == "true" {
 		fmt.Println("DOCKER MODE FOUND")
 		return fmt.Sprintf("%s:%s@tcp(%s:%s)/", os.Getenv("DB_USER"), os.Getenv("DB_PASS"), os.Getenv("DB_HOST"), os.Getenv("DB_PORT"))
 	} else {
@@ -49,7 +49,7 @@ func createDBDsn() string {
 }
 
 func createDsn() string {
-	if _, f := os.LookupEnv("DOCKER_MODE"); f {
+	if v, f := os.LookupEnv("DOCKER_MODE"); f && v == "true" {
 		fmt.Println("DOCKER MODE FOUND")
 		return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", os.Getenv("DB_USER"), os.Getenv("DB_PASS"), os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), DBNAME)
 	} else {

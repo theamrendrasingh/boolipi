@@ -4,11 +4,13 @@
  - using env:	export GIN_MODE=release
  - using code:	gin.SetMode(gin.ReleaseMode)
 
-[GIN-debug] GET    /:id                      --> github.com/theamrendrasingh/boolipi/api.Getting (3 handlers)
-[GIN-debug] POST   /                         --> github.com/theamrendrasingh/boolipi/api.Posting (3 handlers)
-[GIN-debug] PATCH  /:id                      --> github.com/theamrendrasingh/boolipi/api.Patching (3 handlers)
-[GIN-debug] DELETE /:id                      --> github.com/theamrendrasingh/boolipi/api.Deleting (3 handlers)
+[GIN-debug] POST   /token                    --> github.com/theamrendrasingh/boolipi/api.Tokener (3 handlers)
+[GIN-debug] GET    /:id                      --> github.com/theamrendrasingh/boolipi/api.Getting (4 handlers)
+[GIN-debug] POST   /                         --> github.com/theamrendrasingh/boolipi/api.Posting (4 handlers)
+[GIN-debug] PATCH  /:id                      --> github.com/theamrendrasingh/boolipi/api.Patching (4 handlers)
+[GIN-debug] DELETE /:id                      --> github.com/theamrendrasingh/boolipi/api.Deleting (4 handlers)
 [GIN-debug] Environment variable PORT is undefined. Using port :8080 by default
 [GIN-debug] Listening and serving HTTP on :8080
-[GIN] 2020/09/27 - 15:03:37 | 404 |     967.063µs |             ::1 | DELETE   "/cbbf6d99-24ae-40a9-bce2-1cbded4a35cb"
-[GIN] 2020/09/27 - 15:04:46 | 404 |    1.048415ms |             ::1 | PATCH    "/cbbf6d99-24ae-40a9-bce2-1cbded4a35cf"
+[GIN] 2020/09/28 - 14:53:18 | 200 |     562.554µs |             ::1 | POST     "/token"
+[GIN] 2020/09/28 - 14:54:36 | 400 |      22.715µs |             ::1 | POST     "/"
+[GIN] 2020/09/28 - 14:56:29 | 200 |    2.795943ms |             ::1 | POST     "/"

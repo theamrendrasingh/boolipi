@@ -2,6 +2,9 @@ package api
 
 import (
 	"fmt"
+	"time"
+
+	"github.com/theamrendrasingh/boolipi/auth"
 
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
@@ -12,6 +15,20 @@ import (
 type Request struct {
 	Value bool
 	Key   string `json:"key" binding:"required"`
+}
+
+//Tokener : return a new generated token. Using the current timestamp as the username and a generated uuid as the password
+func Tokener(c *gin.Context) {
+	pswd := uuid.NewV4().String()
+	user := time.Now().String()
+	token, err := auth.GenerateAccessToken(user, pswd)
+	if err != nil {
+		c.Writer.WriteHeader(500)
+		return
+	}
+	c.JSON(200, gin.H{
+		"token": token,
+	})
 }
 
 // Posting to handle POST requests for creating a new boolean
@@ -27,9 +44,7 @@ func Posting(c *gin.Context) {
 	}
 
 	u2 := uuid.NewV4().String()
-
 	e, err := db.GetRepo().Create(u2, request.Value, request.Key)
-
 	if err != nil {
 		c.Writer.WriteHeader(500)
 		return
@@ -48,12 +63,10 @@ func Getting(c *gin.Context) {
 
 	id := c.Param("id")
 	e, err := db.GetRepo().Fetch(id)
-
 	if err != nil && err.Error() == "record not found" {
 		c.Writer.WriteHeader(404)
 		return
 	}
-
 	if err != nil {
 		c.Writer.WriteHeader(500)
 		return
@@ -79,12 +92,10 @@ func Patching(c *gin.Context) {
 	}
 
 	e, err := db.GetRepo().Patch(c.Param("id"), request.Value, request.Key)
-
 	if err != nil && err.Error() == "record not found" {
 		c.Writer.WriteHeader(404)
 		return
 	}
-
 	if err != nil {
 		c.Writer.WriteHeader(500)
 		return
